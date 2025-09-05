@@ -1,0 +1,135 @@
+---
+title: "p1lauracopy"
+output: html_document
+date: "2025-09-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We'll be working with Census data.
+
+Don't need
+
+```{r}
+library(tidycensus)
+
+#this allows us to see the different variables we have -
+cen20t2<-load_variables(year=2020, dataset = "acs5", cache = TRUE)
+
+#geography = cbsa
+
+```
+
+## q1
+
+```{r}
+test
+```
+
+## q2
+
+Start here
+
+```{r}
+library(faraway)
+hp<-hprice #hprice from faraway package
+# test<-exp(hp$narsp)*1000 
+  # seems to work, let's apply 
+hp$homeprice<-exp(hp$narsp)*1000 #creates a new column with houseprice info
+```
+
+Q2: What is the 95% confidence interval
+
+```{r}
+#install.packages('BSDA')
+library(BSDA)
+# z.test(data_vector, sigma.x = population_sd, conf.level = 0.95)$conf.int
+  #use when know sd
+
+t.test(hp$homeprice, conf.level = .95)
+
+```
+
+## z-test with Sean's works
+
+```{r}
+```
+
+## q3
+
+```{r}
+```
+
+## q4
+
+Test the difference in homeprice between coastline MSAs and non-coastline MSAs. Clearly state the formula for the hypothesis, the test method and the rationale for the method. What do you conclude about the hypothesis?
+
+we do this thru confidence intrvals and remember "formula" mu1 =/= mu2
+
+find ci's for both & see if there is overlap OR is there another way? I think so, we'll see
+
+```{r}
+
+library(dplyr)
+
+non<-hp|>
+  filter(ajwtr=="0")
+coast<-hp|>
+  filter(ajwtr=="1")
+
+#t.test(hp$homeprice, conf.level = .95) 
+
+t.test(coast$homeprice, conf.level = .95)
+t.test(non$homeprice, conf.level = .95)
+
+```
+
+##q5
+```{r}
+
+```
+
+##q6
+
+Test whether the correlation coefficient between homeprice and ypc is 0 or not.
+Clearly state the hypothesis including the formula. What do you conclude?
+
+```{r}
+#cor() & cor.test()
+
+cor.test(hp$homeprice, hp$ypc)
+
+# hp |> # ---- doesn't work well even tho it should (?)
+ # cor.test(homeprice,ypc)
+
+```
+
+##q8
+
+Normalcy test
+
+```{r}
+hist(hp$homeprice)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
